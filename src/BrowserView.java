@@ -225,6 +225,14 @@ public class BrowserView {
             myModel.setHome();
             enableButtons();
         }));
+        result.getChildren().add(makeButton("AddFavoriteCommand", event -> {
+        	addFavorite();
+            enableButtons();
+        }));
+        myFavorites = new ComboBox<>();
+        myFavorites.setPromptText(myResources.getString("FavoriteFirstItem"));
+        myFavorites.valueProperty().addListener(e -> home());
+        result.getChildren().add(myFavorites);
         return result;
     }
 
