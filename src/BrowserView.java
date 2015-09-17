@@ -23,6 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import resources.BrowserException;
+
 import javax.imageio.ImageIO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -91,13 +93,16 @@ public class BrowserView {
      * Display given URL.
      */
     public void showPage (String url) {
-        URL valid = myModel.go(url);
-        if (url != null) {
-            update(valid);
-        }
-        else {
-            showError("Could not load " + url);
-        }
+        URL valid;
+		try {
+			update(myModel.go(url));
+		} catch (BrowserException e) {
+			try {
+				throw new BrowserException("Could not load %s check your spelling");
+			} catch (BrowserException e1) {
+				e1.printStackTrace();
+			}
+		}
     }
 
     /**
@@ -219,7 +224,7 @@ public class BrowserView {
     }
 
     // make buttons for setting favorites/home URLs
-    private Node makePreferencesPanel () {
+    private HBox makePreferencesPanel () {
         HBox result = new HBox();
         result.getChildren().add(makeButton("SetHomeCommand", event -> {
             myModel.setHome();
@@ -231,7 +236,8 @@ public class BrowserView {
         }));
         myFavorites = new ComboBox<>();
         myFavorites.setPromptText(myResources.getString("FavoriteFirstItem"));
-        //myFavorites.valueProperty().addListener(e -> home());
+        myFavorites.valueProperty().addListener((observable, oldValue, newValue) -> {
+        	showFavorite(newValue);});
         result.getChildren().add(myFavorites);
         return result;
     }

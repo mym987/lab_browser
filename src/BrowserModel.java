@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import resources.BrowserException;
+
 
 /**
  * This represents the heart of the browser: the collections
@@ -59,7 +61,7 @@ public class BrowserModel {
     /**
      * Changes current page to given URL, removing next history.
      */
-    public URL go (String url) {
+    public URL go (String url) throws BrowserException{
         myCurrentURL = completeURL(url);
         if (myCurrentURL != null) {
             if (hasNext()) {
@@ -123,7 +125,7 @@ public class BrowserModel {
     }
 
     // deal with a potentially incomplete URL
-    private URL completeURL (String possible) {
+    private URL completeURL (String possible) throws BrowserException{
         try {
             // try it as is
             return new URL(possible);
@@ -137,7 +139,7 @@ public class BrowserModel {
                     // e.g., let user leave off initial protocol
                     return new URL(PROTOCOL_PREFIX + possible);
                 } catch (MalformedURLException eee) {
-                    return null;
+                	throw new BrowserException("message");
                 }
             }
         }
