@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import resources.BrowserException;
-
 
 /**
  * This represents the heart of the browser: the collections
