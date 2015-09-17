@@ -231,7 +231,7 @@ public class BrowserView {
         }));
         myFavorites = new ComboBox<>();
         myFavorites.setPromptText(myResources.getString("FavoriteFirstItem"));
-        myFavorites.valueProperty().addListener(e -> home());
+        //myFavorites.valueProperty().addListener(e -> home());
         result.getChildren().add(myFavorites);
         return result;
     }
